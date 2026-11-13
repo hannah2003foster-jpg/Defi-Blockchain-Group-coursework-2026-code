@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+private_data/
+evidence/
+snapshots/
+raw/
+outputs/
+*.csv
+!synthetic/*.csv
+*.json
+!synthetic/SYNTHETIC_MANIFEST.json
+!CODE_MANIFEST.json
+*.zip
+*.bundle
+*.parquet

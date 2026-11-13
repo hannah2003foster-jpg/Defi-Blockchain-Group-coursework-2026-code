@@ -1,0 +1,66 @@
+{
+  "package_kind": "CODE_AND_SYNTHETIC_EXAMPLES_ONLY",
+  "prepared_at_utc": "2026-11-13T15:16:49.037139+00:00",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "5066790f62bda258b59168ba31aed58000d05cee0a5ee4638eeb7b2a1456c9df"
+    },
+    {
+      "path": "final_forecast.py",
+      "sha256": "8b308941e6efeaa5a3e570156e0f82e0dc5a90f41eb3e7931d0b57985728ebce"
+    },
+    {
+      "path": "generate_synthetic.py",
+      "sha256": "5cbac8f4afae32515b11f4770a64c710e050e1804112798a0c7feb66fea3407b"
+    },
+    {
+      "path": "model.py",
+      "sha256": "dab4cd4921916adefd05964fb7875670390c4dc04d29bbccf85a1806d9876c49"
+    },
+    {
+      "path": "README.md",
+      "sha256": "4269c08517e36d870f9d285309d33246e0460c4a77bb345eb7083e9865730dfd"
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "4832aea9f164dd349e62409b8eddc4114dbdc3e95dbd8f494190817a9f316567"
+    },
+    {
+      "path": "test_model.py",
+      "sha256": "02415c89e1df47f45e9d70881c9c84924db75949aef8c650960befb116cc06e8"
+    },
+    {
+      "path": "synthetic/prices.csv",
+      "sha256": "2726e8d753df99778af49557a9d3d669d6fb0633e49d5e9d37eacacc4f199869"
+    },
+    {
+      "path": "synthetic/README.md",
+      "sha256": "159600e26d0e538cfa71ec53627b992489cb5f00575a6dcf8c4f8de210194b0d"
+    },
+    {
+      "path": "synthetic/SYNTHETIC_MANIFEST.json",
+      "sha256": "3aa62032a620aaa9fdc715a58d925a7e7bfec47f5494a3c407d8a6241931a6ed"
+    },
+    {
+      "path": "synthetic/training.csv",
+      "sha256": "ba072319843b2e4141ae2b07aaff05ac8ed3443c6e988f074d219b40597593ac"
+    },
+    {
+      "path": "tools/backtest.py",
+      "sha256": "3c5cb1b4d514122bee2fa731ab421bbd07fc0640458062bd0d6e93f2e578e429"
+    },
+    {
+      "path": "tools/build_private_panels.py",
+      "sha256": "669923d95f959e38803f56e0f8f3563ed14ce3fd59b063c9f6d487d7f90b99e0"
+    },
+    {
+      "path": "tools/reproduce_recent_research.py",
+      "sha256": "c3c85c1cd9f1f27c4380a180bca26c7092d3ca29accfa53eab1e59a18882cc35"
+    }
+  ]
+}

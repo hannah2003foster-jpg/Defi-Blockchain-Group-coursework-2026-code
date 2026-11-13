@@ -1,0 +1,10 @@
+{
+  "data_kind": "SYNTHETIC_NOT_REAL_MARKET_DATA",
+  "seed": 832746,
+  "source": "Wholly fabricated by NumPy random generation; no Yahoo, FRED or other market history copied.",
+  "purpose": "Demonstrates input schema and software execution only. Not the empirical coursework analysis.",
+  "files": {
+    "training.csv": "ba072319843b2e4141ae2b07aaff05ac8ed3443c6e988f074d219b40597593ac",
+    "prices.csv": "2726e8d753df99778af49557a9d3d669d6fb0633e49d5e9d37eacacc4f199869"
+  }
+}
