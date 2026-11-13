@@ -8,11 +8,11 @@
     },
     {
       "path": ".gitignore",
-      "sha256": "5066790f62bda258b59168ba31aed58000d05cee0a5ee4638eeb7b2a1456c9df"
+      "sha256": "89d49118a12c3bcf742f3fee29dbaddc531fef4d60011633f5c3c86a8724de32"
     },
     {
       "path": "final_forecast.py",
-      "sha256": "8b308941e6efeaa5a3e570156e0f82e0dc5a90f41eb3e7931d0b57985728ebce"
+      "sha256": "aca84dd6d61199b6265fbf5362d916f6a13c2d31c31b394f8d8e30fc75005693"
     },
     {
       "path": "generate_synthetic.py",
@@ -20,11 +20,11 @@
     },
     {
       "path": "model.py",
-      "sha256": "dab4cd4921916adefd05964fb7875670390c4dc04d29bbccf85a1806d9876c49"
+      "sha256": "1ef78277678b29aa116bc2f3df7e7c50b5ad1dbec851f1aa0ac81fb20b7b5476"
     },
     {
       "path": "README.md",
-      "sha256": "4269c08517e36d870f9d285309d33246e0460c4a77bb345eb7083e9865730dfd"
+      "sha256": "41164ba7e252ed7057b006594291df3efaeedca853996a21a795bf7229217008"
     },
     {
       "path": "requirements.txt",
@@ -40,7 +40,7 @@
     },
     {
       "path": "synthetic/README.md",
-      "sha256": "159600e26d0e538cfa71ec53627b992489cb5f00575a6dcf8c4f8de210194b0d"
+      "sha256": "e5436895c35cfe734b803307bdcd6b72fa4be42e1d1a7b2c8ce1f28639824ff4"
     },
     {
       "path": "synthetic/SYNTHETIC_MANIFEST.json",
@@ -52,15 +52,16 @@
     },
     {
       "path": "tools/backtest.py",
-      "sha256": "3c5cb1b4d514122bee2fa731ab421bbd07fc0640458062bd0d6e93f2e578e429"
+      "sha256": "976f8fbefad2244cfdb168969bfd1b010c4a86ea6328d0788f5fcb302a8b1780"
     },
     {
       "path": "tools/build_private_panels.py",
-      "sha256": "669923d95f959e38803f56e0f8f3563ed14ce3fd59b063c9f6d487d7f90b99e0"
+      "sha256": "76b0a44e3a4a1fcd031e0d363c970e817f66836fde1f54e9ef6ed93ce5bb40d5"
     },
     {
       "path": "tools/reproduce_recent_research.py",
-      "sha256": "c3c85c1cd9f1f27c4380a180bca26c7092d3ca29accfa53eab1e59a18882cc35"
+      "sha256": "06f7c6f8123e317b349e8518a7bed3ef32146b710394be00bf3454d2f929d33c"
     }
-  ]
+  ],
+  "reviewed_at_utc": "2026-11-13T16:07:46.829341+00:00"
 }

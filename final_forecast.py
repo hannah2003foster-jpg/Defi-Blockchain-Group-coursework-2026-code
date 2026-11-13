@@ -8,6 +8,7 @@ from model import CUTOFF,FACTOR,training_rows,fit_forecast,factor_and_baseline
 ROOT=Path(__file__).resolve().parent
 
 def private_inputs(snapshot):
+    """Read frozen inputs after checking raw hashes and retrieval times."""
     manifest=json.loads((snapshot/'data/source_manifest.json').read_text())
     records=manifest['records']
     for record in records:

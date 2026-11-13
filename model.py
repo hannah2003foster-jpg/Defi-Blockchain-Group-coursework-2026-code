@@ -9,6 +9,7 @@ MIN_TRAIN=104
 RIDGE=1.0
 
 def training_rows(panel,asof=CUTOFF):
+    """Keep matured outcomes inside the original calendar-week training window."""
     panel=panel.copy()
     columns=['origin','target_available_at','baseline_available_at','available_'+FACTOR]
     for c in columns:panel[c]=pd.to_datetime(panel[c],utc=True,format='mixed')
@@ -22,6 +23,11 @@ def training_rows(panel,asof=CUTOFF):
     return train
 
 def fit_forecast(train,factor_value,baseline):
+    """Fit ridge and convert the predicted return into index points.
+
+    Returns and factor values are fractions: 0.01 is one percentage point.
+    Only the standardised slope is penalised; the intercept is not.
+    """
     x=train['x_'+FACTOR].to_numpy(float)
     y=(train.actual/train.baseline-1).to_numpy(float)
     mean=float(x.mean());sd=float(x.std(ddof=0));sd=1.0 if sd<1e-12 else sd
@@ -40,6 +46,11 @@ def fit_forecast(train,factor_value,baseline):
         'forecast_at_factor_plus_one_training_sd':float(baseline)*(1+predicted_return+slope)}
 
 def factor_and_baseline(prices,asof=CUTOFF):
+    """Calculate a 20-session lookback from the last 21 admissible price rows.
+
+    This lookback differs from the six-session baseline-to-target return.
+    Availability follows the project's next-New-York-midnight assumption.
+    """
     prices=prices.copy();prices['date']=pd.to_datetime(prices.date)
     prices=prices.sort_values('date')
     if prices.date.duplicated().any():raise ValueError('Duplicate price date')

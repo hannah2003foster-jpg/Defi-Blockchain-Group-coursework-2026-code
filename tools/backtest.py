@@ -1,4 +1,9 @@
-"""Chronological one/two-factor research. Input factors must be point-in-time snapshots."""
+"""Chronological single/pair research using supplied availability metadata.
+
+Historical panels approximate publication timing with recorded lag policies;
+they are not certified point-in-time archives. The final selected-factor
+calculation is run separately through final_forecast.py.
+"""
 from __future__ import annotations
 
 import argparse

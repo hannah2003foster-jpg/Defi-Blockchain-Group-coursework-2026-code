@@ -1,8 +1,11 @@
 """Construct auditable, deliberately lagged EXPLORATORY panels from saved snapshots.
 
-Availability timestamps below are conservative policies, not observed archival timestamps.
+Availability timestamps below are assumed lag policies, not observed archival timestamps.
 The current historical snapshots can contain corrections/revisions. This is not a certified
 point-in-time dataset. All these limitations are carried into the output manifest.
+
+This optional tool writes inside COURSEWORK_PRIVATE_SNAPSHOT. Rebuild in a
+working copy rather than overwriting the original frozen evidence.
 """
 from pathlib import Path
 import hashlib
@@ -190,7 +193,7 @@ def build():
         base = ['origin','baseline','baseline_available_at','baseline_date','actual','target_at','target_session_date','target_available_at']
         columns = base + [c for name in names for c in ['x_' + name, 'available_' + name]]
         panel = all_rows[columns].dropna().copy()
-        # Keep the long-history cohort before the May 2000 IWM launch separately from later factors.
+        # Keep the smaller long-history cohort separate from the expanded universe.
         path = out / f'{cohort}.csv'
         panel.to_csv(path, index=False)
         summaries[cohort] = dict(factors=len(names), models=len(names)*(len(names)+1)//2,

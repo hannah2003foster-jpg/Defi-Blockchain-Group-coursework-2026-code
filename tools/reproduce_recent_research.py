@@ -1,7 +1,8 @@
-"""Explicitly open the last calendar year for hindsight weekly model diagnostics.
+"""Reconstruct the already explored trailing year for hindsight diagnostics.
 
 This does not produce a tradable selection rule. Model forecasts are trained historically,
 but each weekly winning identity is chosen AFTER the realised close is known.
+This does not select or calculate the group's final binding forecast.
 """
 from collections import Counter
 import hashlib
@@ -21,6 +22,7 @@ ROOT = _parser.parse_args().snapshot.resolve()
 OUT = REPO / 'outputs/recent_research'
 ASOF = pd.Timestamp('2026-11-13T12:00:00Z')
 START = ASOF - pd.DateOffset(years=1)
+# Legacy frozen comparator, not the selected equal_weight_relative_20 final model.
 FROZEN = 'vol_20'
 
 LABELS = {
@@ -97,7 +99,7 @@ def main():
         all_best = min(model_rows,key=lambda r:(r['absolute_percentage_error'],r['factor_count'],r['model']))
         baseline = next(r for r in model_rows if r['model']=='unchanged')
         frozen = next(r for r in model_rows if r['model']==FROZEN)
-        # A second independent full-design fit checks the saved frozen model every week.
+        # Cross-check the legacy comparator with the separate full-design fit.
         direct, _ = fit_predict(train,row,(FROZEN,),1.0)
         assert abs(direct-frozen['expected_return']) < 1e-10
         weekly.append(dict(cutoff_date=best['cutoff_date'], target_date=best['target_date'], status='Included',

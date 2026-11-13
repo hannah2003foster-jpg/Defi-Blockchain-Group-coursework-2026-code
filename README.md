@@ -1,12 +1,27 @@
-# S&P 500 coursework code and synthetic demonstration
+# S&P 500 coursework: code and synthetic examples
 
-**PUBLIC SAMPLE DATA IS SYNTHETIC. It contains no downloaded Yahoo/FRED observations and must not be used as evidence of historical accuracy or as the assessed forecast. The assessed final value is stated in the group report.**
+This repository contains the forecasting code, running instructions and **clearly labelled synthetic sample data**. The group report contains the assessed forecast and the real historical results.
 
-This repository contains analysis code, running instructions and fabricated sample inputs. Downloaded market histories, derived historical panels, empirical forecast-by-forecast results, private calculation records and source archives are intentionally excluded. The group retains its original frozen evidence privately. The code-only publication follows the marking clarification reported to the group; that clarification is not a data-provider redistribution licence.
+Downloaded Yahoo/FRED histories, derived historical datasets and private calculation records are excluded from public GitHub. The group retains its frozen evidence privately. This follows the marking clarification reported to the group; it does not grant permission to redistribute provider data.
+
+## Start here
+
+| File or folder | Purpose |
+| --- | --- |
+| [`final_forecast.py`](final_forecast.py) | Runs the final single-factor procedure using synthetic examples or private frozen inputs. |
+| [`model.py`](model.py) | Calculates the selected factor, filters completed training outcomes and fits the ridge model. |
+| [`test_model.py`](test_model.py) | Checks key fitting, timing and synthetic-labelling behaviour. |
+| [`synthetic/`](synthetic/) | Fabricated inputs, their explanation and file fingerprints. |
+| [`generate_synthetic.py`](generate_synthetic.py) | Regenerates the fabricated examples without reading real market data. |
+| [`tools/`](tools/) | Supporting code for the earlier 29-factor single/pair research; requires private inputs. |
+| [`requirements.txt`](requirements.txt) | Exact NumPy and pandas versions used for the code. |
+| [`CODE_MANIFEST.json`](CODE_MANIFEST.json) | SHA-256 fingerprints of the supplied code and example files. |
+
+The Git settings files control file handling and exclude common private-data/output paths from ordinary commits. This repository contains no report draft or raw market-data archive.
 
 ## Run the synthetic demonstration
 
-Use Python 3.11 or later. From this directory:
+Download using **Code → Download ZIP**, extract it, and open a terminal in the folder containing `final_forecast.py`. Use Python 3.11 or later with the dependencies below:
 
 ```text
 python -m pip install -r requirements.txt
@@ -14,47 +29,81 @@ python -B final_forecast.py --demo
 python -B test_model.py
 ```
 
-The demo reads synthetic/training.csv and synthetic/prices.csv and writes outputs/result.json. Every sample row and the output are labelled SYNTHETIC_NOT_REAL_MARKET_DATA. The dates illustrate the coursework calendar; the numeric observations were wholly fabricated using seed 832746. There are no market-data downloads or live API calls. Package installation may access the package registry.
+The demonstration reads `synthetic/training.csv` and `synthetic/prices.csv`, prints an example calculation and saves `outputs/result.json`. Every input row and the output are labelled `SYNTHETIC_NOT_REAL_MARKET_DATA`. **The example output is not the assessed forecast and does not reproduce the report's real historical results.**
 
-To regenerate the examples, run python -B generate_synthetic.py. Its generator reads no real market files. Synthetic values and resulting example forecasts are unrelated to the empirical results in the report.
+All numerical observations are fabricated using random seed `832746`. The dates illustrate the input schema, not a verified exchange calendar. The scripts make no market-data downloads or live API calls; installing dependencies may access the package registry.
 
-## The selected procedure
+To regenerate the same examples, run `python -B generate_synthetic.py` from the repository root.
 
-The single regression predictor is 20-day equal-weight relative return: RSP's 20-trading-session adjusted-close return minus SPY's equivalent. Yahoo ^GSPC daily Close is the sole historical S&P working series in the actual analysis; RSP/SPY adjusted closes are ancillary factor inputs.
+## The selected model and its two time windows
 
-The actual procedure uses Friday noon Europe/London origins and the following Friday 16:00 America/New_York targets. The latest daily baseline is normally the preceding Thursday close, and the original included common-panel cases span six trading-session returns. The private panel retains the original 29-factor common-sample and calendar exclusions even for the final one-factor fit.
+The single predictor is **20-day equal-weight relative return**:
 
-The fixed settings are ridge penalty 1, unpenalised intercept, training-only population mean/SD standardisation, rolling 156 calendar weeks and at least 104 completed eligible outcomes. There is no activation rule, discretionary price adjustment or additional forecast shrinkage. The information cutoff remains 13 November 2026 at 12:00 London; the target is 20 November at 16:00 New York/21:00 London. The submission extension to 20:00 London does not extend the information boundary.
+```text
+(RSP adjusted close / RSP adjusted close 20 trading sessions earlier - 1)
+  minus
+(SPY adjusted close / SPY adjusted close 20 trading sessions earlier - 1)
+```
 
-## Run with privately held authorised inputs
+RSP and SPY supply adjusted ETF prices for the factor. Yahoo `^GSPC` daily **Close** is the sole S&P 500 working series for index baselines and outcomes. The ETFs are not the forecast target.
 
-The public checkout alone does **not** reproduce the real historical tables or the assessed point forecast. Those calculations require the exact privately retained pre-cutoff inputs. The marking clarification allows code, instructions and synthetic examples instead of uploading the source data.
+| Period | Meaning |
+| --- | --- |
+| 20 trading sessions | Historical lookback used to calculate the predictor. |
+| Friday noon London to the following Friday at 16:00 New York | Information cutoff and target for each coursework-style forecast. |
+| Six trading sessions | Baseline-to-target return in included historical cases: normally the preceding Thursday's close to the following Friday's close. Holiday or missing-session mismatches are excluded. |
 
-With access to an authorised local frozen snapshot:
+The final cutoff is **13 November 2026 at 12:00 London/GMT**. The target is **20 November 2026 at 16:00 New York / 21:00 London**. The submission extension to 20:00 London on 13 November does not extend the information cutoff.
+
+Fixed fitting settings:
+
+- one predictor and an unpenalised intercept;
+- ridge penalty `1` on the standardised slope;
+- population mean/standard-deviation scaling learned from training rows only;
+- a rolling window of `156` calendar weeks and at least `104` completed eligible outcomes;
+- original 29-factor common-sample and calendar exclusions, retained for comparability in the final one-factor fit.
+
+No activation rule, discretionary price adjustment or additional forecast shrinkage is applied.
+
+## Reproduce the real calculation with private inputs
+
+The public checkout alone cannot reproduce the real tables or assessed point forecast. Those calculations require the exact privately retained pre-cutoff snapshot.
+
+With authorised access to a local copy:
 
 ```text
 python -B final_forecast.py --snapshot /absolute/path/to/private_snapshot --output /private/output/result.json
 python -B tools/reproduce_recent_research.py --snapshot /absolute/path/to/private_snapshot
 ```
 
-On Windows, use a quoted Windows path. The snapshot must contain:
+On Windows, replace the example paths with quoted Windows paths. The first command runs the selected final model. The second reconstructs the explored trailing-year single/pair comparisons and saves private results under `outputs/recent_research/`; its weekly winners are hindsight diagnostics.
 
-- data/source_manifest.json, with records containing status, file, sha256 and retrieval_completed_at;
-- all raw files referenced by that manifest, retained privately;
-- data/raw/yahoo_GSPC.json, yahoo_RSP.json and yahoo_SPY.json in Yahoo chart-response format;
-- data/panels/expanded.csv, retaining the original eligible common panel;
-- data/panel_manifest.json for the optional broader historical reconstruction, including definitions and skipped_horizon.
+Required private inputs:
 
-The final-model script verifies the private manifest hashes and rejects original source retrievals after the cutoff. It calculates the factor from adjusted ETF closes, selects matured rolling training outcomes, fits the unchanged ridge model and saves its arithmetic locally. It does not silently substitute newly downloaded or synthetic data when the private inputs are missing.
+| Path | Content |
+| --- | --- |
+| `data/source_manifest.json` | Records containing `status`, `file`, `sha256` and `retrieval_completed_at`. |
+| Raw files referenced by the manifest | Original downloaded bytes, retained privately. |
+| `data/raw/yahoo_GSPC.json`, `yahoo_RSP.json`, `yahoo_SPY.json` | Yahoo chart responses for the index and adjusted ETF prices. |
+| `data/panels/expanded.csv` | Original eligible common panel. |
+| `data/panel_manifest.json` | Factor definitions and `skipped_horizon` records for broader reconstruction. |
 
-The expanded panel schema includes origin, baseline, baseline_date, baseline_available_at, actual, target_at, target_session_date, target_available_at, x_equal_weight_relative_20 and available_equal_weight_relative_20. The broader research code additionally needs all 29 original x_FACTOR and available_FACTOR columns. The optional panel-builder code uses COURSEWORK_PRIVATE_SNAPSHOT to point to a local private source directory. It makes no network calls; the supplied sample illustrates only the selected-factor schema and is not a real exchange-calendar reconstruction.
+The final-model script verifies raw-file hashes and rejects original source retrievals after the cutoff. It does not download replacements or silently substitute synthetic inputs when private data is missing.
 
-If obtaining independent inputs from providers under your own access rights, preserve their source, field, adjustment policy, calendar and availability metadata. A later provider download may contain revisions and cannot be represented as the group's pre-noon snapshot. Newly retrieved data must not be inserted into the submitted forecast. Do not commit provider data or derived real-history outputs to this repository.
+The final-model panel requires `origin`, `baseline`, `baseline_date`, `baseline_available_at`, `actual`, `target_at`, `target_session_date`, `target_available_at`, `x_equal_weight_relative_20` and `available_equal_weight_relative_20`. Timestamps carry explicit time-zone offsets. Broader research additionally requires all 29 original `x_FACTOR` and `available_FACTOR` columns.
 
-## Limits and audit scope
+### Supporting research tools
 
-Real historical studies used current-vintage provider histories and assumed availability policies, rather than certified archival publication timestamps. The empirical model search and overlapping retrospective daily reconstructions do not establish an independent predictive edge. The report contains the real validation results, final forecast and limitations; the synthetic demo establishes software execution only.
+- `tools/backtest.py`: general chronological single/pair comparison engine. Running a new search is not required for the submitted forecast.
+- `tools/reproduce_recent_research.py`: reconstructs the already explored trailing year. `FROZEN = 'vol_20'` identifies the retained 20-day-volatility comparator, **not the final selected factor**. Saved research errors are fractions (`0.01` means 1%); marks convert them to percentage points before scoring.
+- `tools/build_private_panels.py`: constructs historical panels from saved sources. It reads `COURSEWORK_PRIVATE_SNAPSHOT` and writes panels and their manifest inside that directory. Rebuild in a separate working copy to preserve original frozen evidence. The optional `COURSEWORK_ASOF` defaults to the noon cutoff. Rebuilding is unnecessary when using the existing panel.
 
-Tests check immature-label exclusion, unavailable-input rejection, agreement with a full-design ridge calculation, exclusion of post-cutoff price rows and explicit synthetic labelling. Prior private reproduction audits remain privately retained. They must not be described as results that can be independently reproduced from this public synthetic sample.
+Independent provider downloads can contain revisions and cannot be represented as the group's pre-noon snapshot. Preserve source, field, adjustment, calendar and availability metadata. Do not insert later data into the submitted forecast or commit real provider histories and derived results publicly.
 
-Only the code and wholly generated synthetic examples are supplied publicly. No third-party market-data licence is granted or implied. No earlier reserved-year candidate forecasts are supplied or generated by the demonstration.
+## Checks and limitations
+
+Tests cover unfinished-outcome exclusion, unavailable-input rejection, agreement with a full-design ridge calculation, post-cutoff price exclusion and synthetic labelling.
+
+Historical studies use downloaded provider histories and assumed availability rules, not certified archival publication timestamps. Repeated model search and overlapping reconstructed daily forecasts do not establish an independent predictive advantage. The report states the real results and limitations.
+
+The synthetic demonstration establishes software execution only. Private reproduction audits are retained separately and are not results reproducible from public examples. No earlier reserved-year candidate forecasts are supplied or generated by the demonstration. No third-party market-data licence is granted or implied.
